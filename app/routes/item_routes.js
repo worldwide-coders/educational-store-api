@@ -39,7 +39,7 @@ router.get('/item', requireToken, (req, res, next) => {
       return item.map(items => item.toObject())
     })
     // respond with status 200 and JSON of the examples
-    .then(carts => res.status(200).json({ item: item }))
+    .then(item => res.status(200).json({ item: item }))
     // if an error occurs, pass it to the handler
     .catch(next)
 })
