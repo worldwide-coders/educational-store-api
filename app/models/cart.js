@@ -18,6 +18,10 @@ const cartSchema = new mongoose.Schema({
   },
   school: {
     name: String
+  },
+  isPurchased: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true

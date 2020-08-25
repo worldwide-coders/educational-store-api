@@ -28,7 +28,7 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-// GET /examples
+// GET /carts
 router.get('/carts', requireToken, (req, res, next) => {
   const user = req.user.id
   Cart.find({ user: user })
@@ -78,7 +78,7 @@ router.post('/carts', requireToken, (req, res, next) => {
 router.patch('/carts/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.cart.owner
+  delete req.body.cart.user
 
   Cart.findById(req.params.id)
     .then(handle404)

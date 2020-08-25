@@ -29,24 +29,24 @@ const requireToken = passport.authenticate('bearer', { session: false })
 const router = express.Router()
 
 // INDEX
-// GET /examples
-router.get('/item', requireToken, (req, res, next) => {
+// GET /item
+router.get('/items', requireToken, (req, res, next) => {
   Item.find()
-    .then(item => {
+    .then(items => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
       // apply `.toObject` to each one
-      return item.map(items => item.toObject())
+      return items.map(item => item.toObject())
     })
     // respond with status 200 and JSON of the examples
-    .then(item => res.status(200).json({ item: item }))
+    .then(items => res.status(200).json({ items: items }))
     // if an error occurs, pass it to the handler
     .catch(next)
 })
 
 // SHOW
-// GET /examples/5a7db6c74d55bc51bdf39793
-router.get('/item/:id', requireToken, (req, res, next) => {
+// GET /item/5a7db6c74d55bc51bdf39793
+router.get('/items/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Item.findById(req.params.id)
     .then(handle404)
@@ -56,11 +56,15 @@ router.get('/item/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+//*****************************************************************
+//  THE BELOW CODE IS FOR BACKEND POPULATION OF CONTENT
+//  IMPLEMENT IF WE HAVE TIME FOR USER TO ADD
+
 // CREATE
-// POST /examples
-router.post('/item', requireToken, (req, res, next) => {
+// POST /item
+router.post('/items', requireToken, (req, res, next) => {
   // set owner of new example to be current user
-  req.body.item.owner = req.user.id
+  req.body.item.school = req.user.id
 
   Item.create(req.body.item)
     // respond to succesful `create` with status 201 and JSON of new "example"
@@ -74,18 +78,18 @@ router.post('/item', requireToken, (req, res, next) => {
 })
 
 // UPDATE
-// PATCH /examples/5a7db6c74d55bc51bdf39793
-router.patch('/item/:id', requireToken, removeBlanks, (req, res, next) => {
+// PATCH /item/5a7db6c74d55bc51bdf39793
+router.patch('/items/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
-  delete req.body.item.owner
+  delete req.body.item.school
 
   Item.findById(req.params.id)
     .then(handle404)
     .then(item => {
       // pass the `req` object and the Mongoose record to `requireOwnership`
       // it will throw an error if the current user isn't the owner
-      requireOwnership(req, item)
+      // requireOwnership(req, item)
 
       // pass the result of Mongoose's `.update` to the next `.then`
       return item.updateOne(req.body.item)
@@ -97,13 +101,13 @@ router.patch('/item/:id', requireToken, removeBlanks, (req, res, next) => {
 })
 
 // DESTROY
-// DELETE /examples/5a7db6c74d55bc51bdf39793
-router.delete('/carts/:id', requireToken, (req, res, next) => {
+// DELETE /item/5a7db6c74d55bc51bdf39793
+router.delete('/items/:id', requireToken, (req, res, next) => {
   Item.findById(req.params.id)
     .then(handle404)
     .then(item => {
       // throw an error if current user doesn't own `example`
-      requireOwnership(req, item)
+      // requireOwnership(req, item)
       // delete the example ONLY IF the above didn't throw
       item.deleteOne()
     })
@@ -113,4 +117,4 @@ router.delete('/carts/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-// module.exports = router
+module.exports = router
