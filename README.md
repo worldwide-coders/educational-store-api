@@ -32,12 +32,16 @@ With this application you can search video game postings in your neighborhood.  
 | DELETE | `/sign-out`            | `users#signout`             | `true`          |
 | PATCH  | `/change-password`     | `users#changepw`            | `true`          |
 | PATCH  | `/update-user`         | `users#updateuser`          | `true`          |
-| GET    | `/video-games`         | `video-games#index`         | `true`          |
-| GET    | `/video-games-user`    | `video-games#indexforuser`  | `true`          |
-| GET    | `/video-games/:id`     | `video-games#show`          | `true`          |
-| POST   | `/video-games`         | `video-games#create`        | `true`          |
-| PATCH  | `/video-games/:id`     | `video-games#update`        | `true`          |
-| DELETE | `/video-games/:id`     | `video-games#delete`        | `true`          |
+| GET    | `/items`               | `items#index`               | `true`          |
+| GET    | `/items/:id`           | `items#show`                | `true`          |
+| POST   | `/items`               | `items#create`              | `true`          |
+| PATCH  | `/carts/:id`           | `carts#update`              | `true`          |
+| DELETE | `/carts/:id`           | `carts#delete`              | `true`          |
+| GET    | `/carts`               | `carts#index`               | `true`          |
+| GET    | `/carts/:id`           | `carts#show`                | `true`          |
+| POST   | `/carts`               | `carts#create`              | `true`          |
+| PATCH  | `/carts/:id`           | `carts#update`              | `true`          |
+| DELETE | `/carts/:id`           | `carts#delete`              | `true`          |
 
 All data returned from API actions is formatted as JSON.
 
