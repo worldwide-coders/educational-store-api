@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-import itemSchema from './item'
+// import itemSchema from './item'
 
 
 const cartSchema = new mongoose.Schema({
@@ -7,7 +7,10 @@ const cartSchema = new mongoose.Schema({
     type: Number,
     required: true
   },
-  items: [itemSchema],
+  items: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Item'
+  }],
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

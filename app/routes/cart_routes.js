@@ -60,7 +60,7 @@ router.get('/carts/:id', requireToken, (req, res, next) => {
 // POST /examples
 router.post('/carts', requireToken, (req, res, next) => {
   // set owner of new example to be current user
-  req.body.cart.owner = req.user.id
+  req.body.cart.user = req.user.id
 
   Cart.create(req.body.cart)
     // respond to succesful `create` with status 201 and JSON of new "example"

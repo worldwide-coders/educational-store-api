@@ -10,21 +10,21 @@ const itemSchema = new mongoose.Schema({
     required: true
   },
   description: {
-    type: String,
+    type: String
   },
   iamgeUrl: {
-    type: String,
+    type: String
   },
   category: {
-    type: String,
+    type: String
   },
   stock: {
-    type: Number,
+    type: Number
   },
   school: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'School',
-    }
+    ref: 'School'
+  }
 }, {
   timestamps: true
 })

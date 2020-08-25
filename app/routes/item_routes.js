@@ -7,7 +7,6 @@ const passport = require('passport')
 // pull in Mongoose model for examples
 const Item = require('../models/item')
 
-
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
 const customErrors = require('../../lib/custom_errors')
@@ -114,4 +113,4 @@ router.delete('/carts/:id', requireToken, (req, res, next) => {
     .catch(next)
 })
 
-module.exports = router
+// module.exports = router
