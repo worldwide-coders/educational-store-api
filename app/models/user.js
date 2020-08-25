@@ -6,9 +6,34 @@ const userSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  firstName: {
+    type: String
+  },
+  lastName: {
+    type: String
+  },
   hashedPassword: {
     type: String,
     required: true
+  },
+  addressLineOne: {
+    type: String
+  },
+  addressLineTwo: {
+    type: String
+  },
+  addressCity: {
+    type: String
+  },
+  addressState: {
+    type: String
+  },
+  addressZipCode: {
+    type: String
+  },
+  isAdmin: {
+    type: Boolean,
+    default: false
   },
   token: String
 }, {
