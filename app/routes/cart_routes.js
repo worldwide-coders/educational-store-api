@@ -49,6 +49,7 @@ router.get('/carts', requireToken, (req, res, next) => {
 router.get('/carts/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Cart.findById(req.params.id)
+  .populate('items')
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "example" JSON
     .then(cart => res.status(200).json({ cart: cart.toObject() }))
