@@ -49,7 +49,7 @@ router.get('/carts', requireToken, (req, res, next) => {
 router.get('/carts/:id', requireToken, (req, res, next) => {
   // req.params.id will be set based on the `:id` in the route
   Cart.findById(req.params.id)
-  .populate('items')
+    .populate('items.item')
     .then(handle404)
     // if `findById` is succesful, respond with 200 and "example" JSON
     .then(cart => res.status(200).json({ cart: cart.toObject() }))
@@ -80,19 +80,22 @@ router.patch('/carts/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.cart.user
+  console.log('backend ', req.body.cart)
 
-  Cart.findById(req.params.id)
-    .then(handle404)
-    .then(cart => {
-      // pass the `req` object and the Mongoose record to `requireOwnership`
-      // it will throw an error if the current user isn't the owner
-      requireOwnership(req, cart)
+  // Cart.findById(req.params.id)
+  Cart.findByIdAndUpdate(req.params.id, req.body.cart, { new: true })
+    // .then(handle404)
+    // .then(cart => {
+    //   // pass the `req` object and the Mongoose record to `requireOwnership`
+    //   // it will throw an error if the current user isn't the owner
+    //   requireOwnership(req, cart)
 
-      // pass the result of Mongoose's `.update` to the next `.then`
-      return cart.updateOne(req.body.cart)
-    })
+    //   // pass the result of Mongoose's `.update` to the next `.then`
+    //   return cart.updateOne(req.body.cart)
+    // })
     // if that succeeded, return 204 and no JSON
-    .then(() => res.sendStatus(204))
+    // .then(() => res.sendStatus(204))
+    .then(cart => res.status(202).json({ cart: cart.toObject() }))
     // if an error occurs, pass it to the handler
     .catch(next)
 })

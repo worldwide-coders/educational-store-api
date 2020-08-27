@@ -138,6 +138,20 @@ router.patch('/change-password', requireToken, (req, res, next) => {
     .catch(next)
 })
 
+// UPDATE user information
+// PATCH /update-user
+router.patch('/update-user', requireToken, (req, res, next) => {
+  let user
+  // `req.user` will be determined by decoding the token payload
+  // User.findById(req.user.id)
+  User.findByIdAndUpdate(req.user.id, req.body.user, { new: true })
+    // save user outside the promise chain
+    // respond with updated user content and status 201
+    .then(user => res.status(202).json({ user: user.toObject() }))
+    // pass any errors along to the error handler
+    .catch(next)
+})
+
 router.delete('/sign-out', requireToken, (req, res, next) => {
   // create a new random token for the user, invalidating the current one
   req.user.token = crypto.randomBytes(16)

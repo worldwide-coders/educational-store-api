@@ -8,8 +8,18 @@ const cartSchema = new mongoose.Schema({
     required: true
   },
   items: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Item'
+    item: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Item'
+      },
+    qty: {
+      type: Number,
+      default: 0
+    },
+    price: {
+      type: Number,
+      default: 0
+    }
   }],
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +34,13 @@ const cartSchema = new mongoose.Schema({
     default: false
   }
 }, {
-  timestamps: true
+    timestamps: true,
+    toObject: {
+      virtuals: true,
+    },
+    toJSON: {
+      virtuals: true,
+    },
 })
 
 module.exports = mongoose.model('Cart', cartSchema)
