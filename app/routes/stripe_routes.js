@@ -52,7 +52,7 @@ router.post("/create-payment-intent", async (req, res) => {
     amount: calculateOrderAmount(items),
     currency: currency
   })
-
+})
   router.get('/secret', async (req, res) => {
   const intent = // ... Fetch or create the PaymentIntent
   res.json({client_secret: intent.client_secret})
