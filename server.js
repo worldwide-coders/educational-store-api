@@ -8,6 +8,7 @@ const userRoutes = require('./app/routes/user_routes')
 const itemRoutes = require('./app/routes/item_routes')
 const cartRoutes = require('./app/routes/school_routes')
 const schoolRoutes = require('./app/routes/cart_routes')
+const stripeRoutes = require('./app/routes/stripe_routes')
 
 // require middleware
 const errorHandler = require('./lib/error_handler')
@@ -67,7 +68,7 @@ app.use(cartRoutes)
 app.use(userRoutes)
 app.use(itemRoutes)
 app.use(schoolRoutes)
-
+app.use(stripeRoutes)
 
 // register error handling middleware
 // note that this comes after the route middlewares, because it needs to be
