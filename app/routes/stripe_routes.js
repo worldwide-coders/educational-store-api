@@ -4,7 +4,7 @@ const express = require('express')
 const passport = require('passport')
 
 // // pull in Mongoose model for examples
- const Item = require('../models/item')
+const Cart = require('../models/cart')
 
 // this is a collection of methods that help us detect situations when we need
 // to throw a custom error
@@ -26,36 +26,57 @@ const removeBlanks = require('../../lib/remove_blank_fields')
 
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
-
-router.get('/potatoes', (req, res, next) => {
-  // const user = req.user.id
-  // return res.status(204)
-  Item.find()
-    .then(carts => {
-      // `examples` will be an array of Mongoose documents
-      // we want to convert each one to a POJO, so we use `.map` to
-      // apply `.toObject` to each one
-      return carts.map(cart => cart.toObject())
-    })
-    // respond with status 200 and JSON of the examples
-    .then(carts => res.status(200).json({ carts: carts }))
-    // if an error occurs, pass it to the handler
-    .catch(next)
-})
-
 const stripe = require('stripe')('sk_test_4eC39HqLyjWDarjtT1zdp7dc')
 
+const calculateOrderAmount = cartId => {
+  // Replace this constant with a calculation of the order's amount
+  // Calculate the order total on the server to prevent
+  // people from directly manipulating the amount on the client
+  return (Cart.findById(cartId)
+    .populate('lineItems.item')
+    .then(cart => {
+      return cart.priceTotal
+    }))
+}
+
 router.post("/create-payment-intent", async (req, res) => {
-  const { items, currency } = req.body;
+  console.log('this is req', req.body)
+  const { items, currency, cartId } = req.body;
   // Create a PaymentIntent with the order amount and currency
+  const amount = await calculateOrderAmount( cartId) * 100
+  console.log('this is amoutn', amount, 'type of', typeof amount)
   const paymentIntent = await stripe.paymentIntents.create({
-    amount: calculateOrderAmount(items),
+    amount: amount,
     currency: currency
   })
+  res.status(201).json({ clientSecret: paymentIntent.client_secret })
 })
-  router.get('/secret', async (req, res) => {
+router.get('/secret', async (req, res) => {
   const intent = // ... Fetch or create the PaymentIntent
-  res.json({client_secret: intent.client_secret})
+    res.json({ client_secret: intent.client_secret })
+})
+router.post('/pay', async (request, response) => {
+  let intent;
+  if (request.body.payment_method_id) {
+    // Create the PaymentIntent
+    // intent = await stripe.paymentIntents.create({
+    //   payment_method: request.body.payment_method_id,
+    //   amount: 1099,
+    //   currency: 'usd',
+    //   confirmation_method: 'manual',
+    //   confirm: true
+    intent = request.body.intent
+  } else if (request.body.payment_intent_id) {
+    intent = await stripe.paymentIntents.confirm(
+      request.body.payment_intent_id
+    )
+  }
+  // Send the response to the client
+  response.send(generateResponse(intent))
+    .catch(e => (
+      // Display error on client
+      response.send({ error: e.message })
+    ))
 })
 
 module.exports = router

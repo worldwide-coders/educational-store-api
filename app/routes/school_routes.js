@@ -64,7 +64,6 @@ router.post('/schools', requireToken, (req, res, next) => {
   School.create(req.body.school)
     // respond to succesful `create` with status 201 and JSON of new "school"
     .then(school => {
-      console.log(school)
       res.status(201).json({ school: school.toObject() })
     })
     // if an error occurs, pass it off to our error handler

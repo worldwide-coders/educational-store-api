@@ -80,7 +80,6 @@ router.patch('/carts/:id', requireToken, removeBlanks, (req, res, next) => {
   // if the client attempts to change the `owner` property by including a new
   // owner, prevent that by deleting that key/value pair
   delete req.body.cart.user
-  console.log('backend ', req.body.cart, req.params.id)
 
   // Cart.findById(req.params.id)
   Cart.findByIdAndUpdate(req.params.id, req.body.cart, { new: true })
@@ -97,7 +96,6 @@ router.patch('/carts/:id', requireToken, removeBlanks, (req, res, next) => {
     // if that succeeded, return 204 and no JSON
     // .then(() => res.sendStatus(204))
     .then(cart => {
-      console.log('in add ', cart)
       res.status(202).json({ cart: cart.toObject() })
     })
     // if an error occurs, pass it to the handler
