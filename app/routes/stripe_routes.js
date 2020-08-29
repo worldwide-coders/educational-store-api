@@ -22,7 +22,7 @@ const removeBlanks = require('../../lib/remove_blank_fields')
 // passing this as a second argument to `router.<verb>` will make it
 // so that a token MUST be passed for that route to be available
 // it will also set `req.user`
-// const requireToken = passport.authenticate('bearer', { session: false })
+const requireToken = passport.authenticate('bearer', { session: false })
 
 // instantiate a router (mini app that only handles routes)
 const router = express.Router()
@@ -39,9 +39,9 @@ const calculateOrderAmount = cartId => {
     }))
 }
 
-router.post("/create-payment-intent", async (req, res) => {
+router.post("/create-payment-intent", requireToken, async (req, res) => {
   console.log('this is req', req.body)
-  const { items, currency, cartId } = req.body;
+  const { currency, cartId } = req.body;
   // Create a PaymentIntent with the order amount and currency
   const amount = await calculateOrderAmount( cartId) * 100
   console.log('this is amoutn', amount, 'type of', typeof amount)
@@ -51,11 +51,11 @@ router.post("/create-payment-intent", async (req, res) => {
   })
   res.status(201).json({ clientSecret: paymentIntent.client_secret })
 })
-router.get('/secret', async (req, res) => {
+router.get('/secret', requireToken, async (req, res) => {
   const intent = // ... Fetch or create the PaymentIntent
     res.json({ client_secret: intent.client_secret })
 })
-router.post('/pay', async (request, response) => {
+router.post('/pay', requireToken, async (request, response) => {
   let intent;
   if (request.body.payment_method_id) {
     // Create the PaymentIntent
