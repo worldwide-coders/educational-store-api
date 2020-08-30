@@ -70,6 +70,6 @@ All data returned from API actions is formatted as JSON.
 
 #### ERD:
 
-![wireframe](https://github.com/sebastian-chang/block-share/blob/master/public/images/Block-Share-ERD.jpg)
+![wireframe](https://i.imgur.com/iwe6nV4.png)
 
 ---
