@@ -6,8 +6,8 @@ Some communities are fortunate to have adequate resources in their public school
 
 - [GitHub API Repo](https://github.com/worldwide-coders/educational-store-api)
 - [Deployed API](https://thawing-basin-32932.herokuapp.com)
-- [GitHub Repo](https://github.com/worldwide-coders/educational-store)
-- [Deployed Client](https://sebastian-chang.github.io/block-share)
+- [GitHub Client Repo](https://github.com/worldwide-coders/educational-store)
+- [Deployed Client](https://worldwide-coders.github.io/educational-store/#/)
 
 ## Planning Story
 
@@ -70,6 +70,6 @@ All data returned from API actions is formatted as JSON.
 
 #### ERD:
 
-![wireframe](https://i.imgur.com/iwe6nV4.png)
+![ERD](https://i.imgur.com/iwe6nV4.png)
 
 ---
