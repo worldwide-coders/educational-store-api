@@ -31,7 +31,8 @@ const router = express.Router()
 // GET /carts
 router.get('/carts', requireToken, (req, res, next) => {
   const user = req.user.id
-  Cart.find({ user: user })
+  Cart.find({ user: user, isPurchased: true })
+    .populate('lineItems.item')
     .then(carts => {
       // `examples` will be an array of Mongoose documents
       // we want to convert each one to a POJO, so we use `.map` to
